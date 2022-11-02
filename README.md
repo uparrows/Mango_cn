@@ -8,7 +8,7 @@ This repo is a fork of getmango/Mango , those things i've done was translated th
 原仓库地址：https://github.com/getmango/Mango
 该版本为Mango的汉化版，并且将原版中从cnd中获取js脚本改到本地，以方便大陆用户使用，修复docker版在群晖上的权限问题，并打包了群晖spk套件版。
 
-
+docker版需要将漫画文件夹挂载到/root/mango/library
 
 芒果是一个自托管的漫画服务器和阅读器。它的功能包括
 
