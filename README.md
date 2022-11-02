@@ -10,6 +10,9 @@ This repo is a fork of getmango/Mango , those things i've done was translated th
 
 docker版需要将漫画文件夹挂载到/root/mango/library
 
+[<img src="https://img.shields.io/docker/pulls/dezhao/mango_cn.svg">](https://hub.docker.com/r/dezhao/mango_cn/)
+[![IC](https://github.com/uparrows/mango_cn/actions/workflows/docker-mango.yml/badge.svg?branch=main)](https://github.com/uparrows/LANraragi_cn/actions/workflows/docker-mango.yml)
+
 芒果是一个自托管的漫画服务器和阅读器。它的功能包括
 
 多用户支持
