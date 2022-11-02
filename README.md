@@ -1,4 +1,5 @@
-![banner](./public/img/banner-paddings.png)
+![banner-paddings](https://user-images.githubusercontent.com/38988286/199423262-68f03906-5444-499c-8616-aa675039544e.png)
+
 
 # Mango
 
