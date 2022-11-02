@@ -15,7 +15,7 @@ This repo is a fork of getmango/Mango , those things i've done was translated th
 多用户支持
 OPDS 支持
 暗/亮模式开关
-支持的格式：，，和.cbz.zip.cbr.rar
+支持的格式：.cbz.zip.cbr.rar
 支持库中的嵌套文件夹
 自动存储阅读进度
 缩略图生成
