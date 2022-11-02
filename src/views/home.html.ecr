@@ -1,0 +1,83 @@
+<%- if new_user && empty_library -%>
+
+  <div class="uk-container uk-text-center">
+    <i class="fas fa-plus" style="font-size: 80px;"></i>
+    <h2>添加你的第一部漫画</h2>
+    <p style="margin-bottom: 40px;">我们还找不到任何文件。添加一些到您的库中，它们将出现在此处。</p>
+    <dl class="uk-description-list">
+      <dt style="font-weight: 500;">当前资源库路径</dt>
+      <dd><code><%= Config.current.library_path %></code></dd>
+      <dt style="font-weight: 500;">想要更改您的资源库路径？</dt>
+      <dd>配置 <code>config.yml</code> 其路径为: <code><%= Config.current.path %></code></dd>
+      <dt style="font-weight: 500;">还看不到您的文件？</dt>
+      <dd>
+      您必须等待 <%= Config.current.scan_interval_minutes %> 分钟才能完成库扫描
+      <% if is_admin %>
+        , 或者从 <a href="<%= base_url %>admin">管理员</a>手动扫描
+      <% end %>.
+      </dd>
+    </dl>
+  </div>
+
+<%- elsif new_user && empty_library == false -%>
+
+  <div class="uk-container uk-text-center">
+    <i class="fas fa-book-open" style="font-size: 80px;"></i>
+    <h2>阅读你的第一部漫画</h2>
+    <p>一旦你开始阅读，Mango 会记住你离开的地方
+    并在此处显示您的条目。</p>
+    <a href="<%= base_url %>library" class="uk-button uk-button-default">查看库</a>
+  </div>
+
+<%- elsif new_user == false && empty_library == false -%>
+
+  <%- if continue_reading.empty? && recently_added.empty? -%>
+    <div class="uk-container uk-text-center">
+      <img src="<%= base_url %>img/banner.png" style="max-width: 400px; padding: 0 20px;">
+      <p>一个自托管的漫画服务器和阅读器</p>
+      <a href="<%= base_url %>library" class="uk-button uk-button-default">查看库</a>
+    </div>
+  <%- end -%>
+
+  <%- unless continue_reading.empty? -%>
+    <h2 class="uk-title home-headings">继续阅读</h2>
+    <div class="uk-child-width-1-4@m uk-child-width-1-2" uk-grid>
+      <%- continue_reading.each do |cr| -%>
+        <% item = cr[:entry] %>
+        <% progress = cr[:percentage] %>
+        <%= render_component "card" %>
+      <%- end -%>
+    </div>
+  <%- end -%>
+
+  <%- unless start_reading.empty? -%>
+    <h2 class="uk-title home-headings">开始阅读</h2>
+    <div class="uk-child-width-1-4@m uk-child-width-1-2" uk-grid>
+      <%- start_reading.each do |t| -%>
+        <% item = t %>
+        <% progress = 0.0 %>
+        <%= render_component "card" %>
+      <%- end -%>
+    </div>
+  <%- end -%>
+
+  <%- unless recently_added.empty? -%>
+    <h2 class="uk-title home-headings">最近添加</h2>
+    <div class="uk-child-width-1-4@m uk-child-width-1-2" uk-grid>
+      <%- recently_added.each do |ra| -%>
+        <% item = ra %>
+        <% progress = ra[:percentage] %>
+        <%= render_component "card" %>
+      <%- end -%>
+    </div>
+  <%- end -%>
+
+  <%= render_component "entry-modal" %>
+
+<%- end -%>
+
+<% content_for "script" do %>
+  <%= render_component "dots" %>
+  <script src="<%= base_url %>js/alert.js"></script>
+  <script src="<%= base_url %>js/title.js"></script>
+<% end %>

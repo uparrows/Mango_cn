@@ -1,0 +1,46 @@
+name: mango
+version: 0.27.0
+
+authors:
+  - Alex Ling <hkalexling@gmail.com>
+
+targets:
+  mango:
+    main: src/mango.cr
+
+crystal: 1.0.0
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+  kemal-session:
+    github: kemalcr/kemal-session
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+  baked_file_system:
+    github: schovi/baked_file_system
+  archive:
+    github: hkalexling/archive.cr
+  ameba:
+    github: crystal-ameba/ameba
+  clim:
+    github: at-grandpa/clim
+  duktape:
+    github: jessedoyle/duktape.cr
+  myhtml:
+    github: kostya/myhtml
+  http_proxy:
+    github: mamantoha/http_proxy
+  image_size:
+   github: hkalexling/image_size.cr
+  koa:
+    github: hkalexling/koa
+  tallboy:
+    github: epoch/tallboy
+    branch: master
+  mg:
+   github: hkalexling/mg
+  sanitize:
+    github: hkalexling/sanitize

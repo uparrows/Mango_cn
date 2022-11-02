@@ -1,0 +1,45 @@
+<ul class="uk-list uk-list-large uk-list-divider" x-data="component()" x-init="init()">
+  <li><a class="uk-link-reset" href="<%= base_url %>admin/user">用户管理</a></li>
+  <li>
+    <a class="uk-link-reset" href="<%= base_url %>admin/missing">缺少条目</a>
+    <% if missing_count > 0 %>
+      <div class="uk-align-right">
+        <span class="uk-badge"><%= missing_count %></span>
+      </div>
+    <% end %>
+  </li>
+  <li>
+    <a class="uk-link-reset" @click="scan()">
+      <span :style="`${scanning ? 'color:grey' : ''}`">扫描库文件</span>
+      <div class="uk-align-right">
+        <div uk-spinner x-show="scanning"></div>
+        <span x-show="!scanning && scanMs > 0" x-text="`扫描 ${scanTitles} 条目于 ${scanMs}ms`"></span>
+      </div>
+    </a>
+  </li>
+  <li>
+    <a class="uk-link-reset" @click="generateThumbnails()">
+      <span :style="`${generating ? 'color:grey' : ''}`">生成缩略图</span>
+      <div class="uk-align-right">
+        <span x-show="generating && progress > 0" x-text="`${(progress * 100).toFixed(2)}%`"></span>
+      </div>
+    </a>
+  </li>
+  <li>
+    <span>主题</span>
+    <select id="theme-select" class="uk-select uk-align-right uk-width-1-3@m uk-width-1-2" :value="themeSetting" @change="themeChanged($event)">
+      <option>Dark</option>
+      <option>Light</option>
+      <option>System</option>
+    </select>
+  </li>
+</ul>
+
+<hr class="uk-divider-icon">
+<p class="uk-text-meta">版本: v<%= MANGO_VERSION %>  汉化：<a href="https://yuanfangblog.xyz">昭君</a></p>
+<a class="uk-button uk-button-danger" href="<%= base_url %>logout">登出</a>
+
+<% content_for "script" do %>
+  <script src="<%= base_url %>js/alert.js"></script>
+  <script src="<%= base_url %>js/admin.js"></script>
+<% end %>

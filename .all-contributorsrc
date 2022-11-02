@@ -1,0 +1,138 @@
+{
+  "projectName": "Mango",
+  "projectOwner": "hkalexling",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "hkalexling",
+      "name": "Alex Ling",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7845831?v=4",
+      "profile": "https://github.com/hkalexling/",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
+    },
+    {
+      "login": "jaredlt",
+      "name": "jaredlt",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/8590311?v=4",
+      "profile": "https://github.com/jaredlt",
+      "contributions": [
+        "code",
+        "ideas",
+        "design"
+      ]
+    },
+    {
+      "login": "shincurry",
+      "name": "ココロ",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4946624?v=4",
+      "profile": "https://windisco.com/",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "noirscape",
+      "name": "Valentijn",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/13433513?v=4",
+      "profile": "https://catgirlsin.space/",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "flying-sausages",
+      "name": "flying-sausages",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/23618693?v=4",
+      "profile": "https://github.com/flying-sausages",
+      "contributions": [
+        "doc",
+        "ideas"
+      ]
+    },
+    {
+      "login": "XavierSchiller",
+      "name": "Xavier",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/22575255?v=4",
+      "profile": "https://github.com/XavierSchiller",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "WROIATE",
+      "name": "Jarao",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/44677306?v=4",
+      "profile": "https://github.com/WROIATE",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "Leeingnyo",
+      "name": "이인용",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6760150?v=4",
+      "profile": "https://github.com/Leeingnyo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "h45h74x",
+      "name": "Simon",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/27204033?v=4",
+      "profile": "http://h45h74x.eu.org",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "davidkna",
+      "name": "David Knaack",
+      "avatar_url": "https://avatars.githubusercontent.com/u/835177?v=4",
+      "profile": "https://github.com/davidkna",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "lincolnthedev",
+      "name": "i use arch btw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41193328?v=4",
+      "profile": "https://lncn.dev",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "BradleyDS2",
+      "name": "BradleyDS2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2174921?v=4",
+      "profile": "https://github.com/BradleyDS2",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "nduja",
+      "name": "Robbo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69299134?v=4",
+      "profile": "https://github.com/nduja",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true
+}

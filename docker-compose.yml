@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mango:
+    container_name: mango
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - ${PORT}
+    ports:
+      - "${PORT}:9000"
+    volumes:
+      - ${MAIN_DIRECTORY_PATH}:/root/mango
+      - ${CONFIG_DIRECTORY_PATH}:/root/.config/mango

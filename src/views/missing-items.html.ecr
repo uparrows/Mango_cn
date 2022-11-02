@@ -1,0 +1,40 @@
+<div x-data="component()" x-init="load()" x-cloak x-show="!loading">
+  <p x-show="empty" class="uk-text-lead uk-text-center">没有找到丢失的条目.</p>
+  <div x-show="!empty">
+    <p>以下项目存在于您的资料库中，但现在我们找不到它们了。 如果您错误地删除了它们，请尝试恢复文件或文件夹，将它们放回原来的位置，然后重新扫描资料库。 除此之外，您可以使用下面的按钮安全地删除它们和相关的元数据以释放数据库空间。</p>
+    <button class="uk-button uk-button-danger" @click="rmAll()">删除全部</button>
+    <table class="uk-table uk-table-striped uk-overflow-auto">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>相对路径</th>
+          <th>ID</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="title in titles" :key="title">
+          <tr :id="`title-${title.id}`">
+            <td>标题</td>
+            <td x-text="title.path"></td>
+            <td x-text="title.id"></td>
+            <td><a @click="rm($event)" uk-icon="trash"></a></td>
+          </tr>
+        </template>
+        <template x-for="entry in entries" :key="entry">
+          <tr :id="`entry-${entry.id}`">
+            <td>路径</td>
+            <td x-text="entry.path"></td>
+            <td x-text="entry.id"></td>
+            <td><a @click="rm($event)" uk-icon="trash"></a></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% content_for "script" do %>
+  <script src="<%= base_url %>js/alert.js"></script>
+  <script src="<%= base_url %>js/missing-items.js"></script>
+<% end %>

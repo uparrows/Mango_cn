@@ -1,0 +1,216 @@
+<div x-data="component()" x-init="init()" x-cloak>
+  <div class="uk-grid-small" uk-grid style="margin-bottom:40px;">
+    <div class="uk-container uk-text-center" x-show="plugins.length === 0" style="width:100%">
+      <h2>未找到插件</h2>
+      <p>我们以下目录中找不到任何插件 <code><%= Config.current.plugin_path %></code>.</p>
+      <p>您可以从以下网址下载官方插件 <a href="https://github.com/hkalexling/mango-plugins">Mango 插件库</a>.</p>
+    </div>
+
+    <div x-show="plugins.length > 0" style="width:100%">
+      <h2 class=uk-title>使用插件下载
+        <span x-show="searching" uk-spinner class="uk-margin-left"></span>
+      </h2>
+
+      <template x-if="info !== undefined">
+        <div>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-3-4@m uk-child-width-1-1">
+              <div class="uk-margin">
+                <div class="uk-form-controls">
+                  <label class="uk-form-label">&nbsp;</label>
+                  <input class="uk-input" type="text" :placeholder="info.placeholder" x-model="query" @keydown.enter="search()">
+                </div>
+              </div>
+            </div>
+            <div class="uk-width-expand">
+              <div class="uk-margin">
+                <label class="uk-form-label">选择一个插件</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" x-model="pid" @change="pluginChanged()">
+                    <template x-for="p in plugins" :key="p">
+                      <option :value="p.id" x-text="p.title"></option>
+                    </template>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="uk-width-auto">
+              <div class="uk-margin">
+                <label class="uk-form-label">&nbsp;</label>
+                <div class="uk-form-controls" style="padding-top: 10px;">
+                  <span uk-icon="info" uk-toggle="target: #toggle"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <template x-for="entry, idx in Object.entries(info).filter(tp => !['id', 'settings'].includes(tp[0]))" :key="idx">
+            <dl class="uk-description-list" id="toggle" hidden>
+              <dt x-text="entry[0] === 'version' ? '目标 API 版本' : entry[0].replace('_', ' ')"></dt>
+              <dd x-text="entry[1]"></dd>
+            </dl>
+          </template>
+        </div>
+      </template>
+
+      <template x-if="manga">
+        <div class="uk-margin">
+          <p x-show="manga.length === 0">没有找到匹配的漫画.</p>
+          <p x-show="manga.length > 0">
+          <span x-text="`${manga.length} 漫画已找到`"></span>
+          <span :uk-icon="listManga ? 'chevron-down' : 'chevron-right'" @click="listManga = !listManga"></span>
+          </p>
+
+          <div class="uk-child-width-1-4@m uk-child-width-1-2" uk-grid x-show="listManga">
+            <template x-for="m in manga" :key="m.id">
+              <div class="item" :data-id="m.id" @click="mangaSelected($event)">
+                <div class="uk-card uk-card-default">
+                  <div class="uk-card-media-top uk-inline">
+                    <img uk-img :data-src="m.cover_url">
+                  </div>
+                  <div class="uk-card-body">
+                    <h3 class="uk-card-title break-word uk-margin-remove-bottom free-height" x-text="m.title"></h3>
+                    <p class="uk-text-meta" x-text="`ID: ${m.id}`"></p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <div class="uk-margin-large-top" x-show="chapters !== undefined">
+        <h3 x-text="mangaTitle"></h3>
+        <p x-text="`${chapters ? chapters.length : 0} 章节已找到`"></p>
+
+        <div class="uk-margin">
+          <div x-show="chapters && chapters.length > 0 && chapters.length <= chaptersLimit">
+            <button class="uk-button uk-button-default" @click="selectAll()">全选</button>
+            <button class="uk-button uk-button-default" @click="clearSelection()">清空</button>
+            <button class="uk-button uk-button-primary" @click="download()">下载已选</button>
+            <button class="uk-icon-button uk-margin-small-left" uk-icon="settings" @click="showFilters = !showFilters"></button>
+          </div>
+          <div uk-spinner class="uk-margin-left" x-show="adding"></div>
+        </div>
+
+        <form x-show="showFilters || (chapters && chapters.length > chaptersLimit)" class="uk-form-stacked uk-margin-bottom" id="filter-form">
+          <template x-for="field in filters">
+            <div class="uk-margin">
+              <label class="uk-form-label">
+                <span x-text="field.key"></span>
+                <template x-if="field.type === 'number'">
+                  <span class="uk-text-meta" x-text="`(在 ${Math.min(...field.values)} 和 ${Math.max(...field.values)}之间)`"></span>
+                </template>
+              </label>
+
+              <div x-show="field.type === 'number'" class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-2@s">
+                  <input class="uk-input" placeholder="minimum value" :data-filter-key="field.key" data-filter-type="number-min">
+                </div>
+                <div class="uk-width-1-2@s">
+                  <input class="uk-input" placeholder="maximum value" :data-filter-key="field.key" data-filter-type="number-max">
+                </div>
+              </div>
+
+              <div x-show="field.type === 'date'" class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-2@s">
+                  <input class="uk-input" type="date" placeholder="minimum date (yyyy-mm-dd)" :data-filter-key="field.key" data-filter-type="date-min">
+                </div>
+                <div class="uk-width-1-2@s">
+                  <input class="uk-input" type="date" placeholder="maximum date (yyyy-mm-dd)" :data-filter-key="field.key" data-filter-type="date-max">
+                </div>
+              </div>
+
+              <input x-show="field.type === 'string'" class="uk-input" placeholder="filter text" :data-filter-key="field.key" data-filter-type="string">
+
+              <select class="uk-select" x-show="field.type === 'array'" :data-filter-key="field.key" data-filter-type="array">
+                <option value="all">全部</option>
+                <template x-for="v in field.values" :key="v">
+                  <option x-text="v" :value="v"></option>
+                </template>
+              </select>
+            </div>
+          </template>
+          <button class="uk-button uk-button-primary" @click.prevent="applyFilters()">应用</button>
+          <button class="uk-button uk-button-default" @click.prevent="clearFilters()">清除</button>
+          <span x-show="subscribable">
+            <span class="uk-divider-vertical uk-margin-left uk-margin-right"></span>
+            <button class="uk-button uk-button-default" @click.prevent="UIkit.modal($refs.modal).show()" :disable="subscribing">订阅</button>
+          </span>
+        </form>
+
+        <p class="uk-text-meta" x-show="chapters && chapters.length > chaptersLimit" x-text="`该漫画有 ${chapters ? chapters.length : 0} 章节, 但Mango最多只能列出 ${chaptersLimit}. 请使用过滤器缩小搜索范围.`"></p>
+        <p x-show="chapters && chapters.length === 0" class="uk-text-meta">没有找到章节.</p>
+
+        <div x-show="chapters && chapters.length > 0 && chapters.length <= chaptersLimit">
+          <p class="uk-text-meta">单击表格行以选择章节。 将鼠标拖到多行上以将它们全部选中。 按 住 Ctrl 进行多个不相邻的选择.</p>
+          <div class="uk-overflow-auto">
+            <table class="uk-table uk-table-striped">
+              <thead>
+                <tr>
+                  <template x-for="(k, idx) in chapterKeys" :key="k">
+                    <th :id="`th-${idx}`" @click="thClicked($event)">
+                      <span x-text="k"></span>
+                      <i class="fas fa-sort" x-show="![1, -1].includes(sortOptions[idx])"></i>
+                      <i class="fas fa-sort-up" x-show="sortOptions[idx] === 1"></i>
+                      <i class="fas fa-sort-down" x-show="sortOptions[idx] === -1"></i>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody id="selectable">
+                <template x-if="chapters !== undefined && chapters.length < chaptersLimit">
+                  <template x-for="ch in chapters" :key="ch">
+                    <tr class="ui-widget-content" :id="ch.id">
+                      <template x-for="k in chapterKeys" :key="k">
+                        <td x-html="renderCell(ch[k])"></td>
+                      </template>
+                    </tr>
+                  </template>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uk-modal="container:false" x-ref="modal">
+    <div class="uk-modal-dialog">
+      <div class="uk-modal-header">
+        <h2 class="uk-modal-title">订阅确认</h2>
+      </div>
+      <div class="uk-modal-body">
+        <p>将创建具有以下过滤器的订阅。 全部 <strong>未来</strong> 匹配过滤器的章节将被自动下载.</p>
+        <table class="uk-table uk-table-striped">
+          <thead>
+            <tr>
+              <th>关键词</th>
+              <th>种类</th>
+              <th>值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="ft in filterSettings" :key="ft">
+              <tr x-html="renderFilterRow(ft)"></tr>
+            </template>
+          </tbody>
+        </table>
+        <p>为订阅输入一个有意义的名称以继续:</p>
+        <input class="uk-input" type="text" x-model="subscriptionName">
+      </div>
+      <div class="uk-modal-footer uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+        <button class="uk-button uk-button-primary" type="button" :disabled="subscriptionName.trim().length === 0" @click="subscribe($refs.modal)">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for "script" do %>
+  <%= render_component "jquery-ui" %>
+  <%= render_component "moment" %>
+  <script src="<%= base_url %>js/alert.js"></script>
+  <script src="<%= base_url %>js/plugin-download.js"></script>
+<% end %>
